@@ -1,0 +1,49 @@
+# 依赖目录
+frontend/node_modules/
+backend/__pycache__/
+backend/routes/__pycache__/
+
+# 数据库文件
+*.db
+
+# 环境变量
+.env
+.env.local
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+~$*
+
+# 构建输出
+frontend/dist/
+frontend/build/
+
+# IDE文件
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Python缓存
+*.pyc
+*.pyo
+__pycache__/
+
+# Node.js依赖
+node_modules/
+package-lock.json
+
+# 生成的文件
+*.pptx
+*.docx
+
+# 软件目录
+软件/

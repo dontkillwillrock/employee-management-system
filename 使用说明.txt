@@ -1,0 +1,158 @@
+========================================
+        人事管理系统 - 使用说明
+========================================
+
+一、环境要求
+----------------------------------------
+- Python 3.12+
+- Node.js 18+
+- MySQL 5.7+
+
+
+二、启动方式
+----------------------------------------
+
+1. 启动后端（Flask）
+   打开终端，执行：
+   > cd f:\zuoye\管理系统\backend
+   > python app.py
+   后端运行在 http://localhost:5000
+
+2. 启动前端（Vue）
+   再开一个终端，执行：
+   > cd f:\zuoye\管理系统\frontend
+   > npm run dev
+   前端运行在 http://localhost:3000
+
+3. 打开浏览器访问 http://localhost:3000
+
+
+三、登录账号
+----------------------------------------
+管理员账号：admin / admin123    （可增删改查）
+员工账号：  zhangsan / 123456   （仅可查看）
+
+
+四、权限说明
+----------------------------------------
+管理员（admin）：
+  - 可以查看所有数据
+  - 可以新增、编辑、删除员工/部门/薪资
+  - 可以审批请假
+
+员工（zhangsan）：
+  - 可以查看所有数据
+  - 可以签到、签退、申请请假
+  - 不能新增、编辑、删除任何数据
+  - 不能审批请假
+
+
+五、功能模块
+----------------------------------------
+
+1. 数据看板
+   - 在职员工总数、部门数量统计
+   - 今日打卡、迟到人数
+   - 部门人员分布饼图
+   - 薪资趋势柱状图
+   - 已发放/待发放薪资总额
+
+2. 员工管理
+   - 新增员工（姓名、性别、电话、邮箱、职位、部门、入职日期）
+   - 编辑员工信息
+   - 删除员工
+   - 按姓名/部门/状态搜索筛选
+   - 分页浏览
+
+3. 部门管理
+   - 新增部门（名称、描述）
+   - 编辑部门信息
+   - 删除部门（有员工的部门不可删除）
+   - 显示各部门员工数量
+
+4. 考勤管理
+   - 签到（记录签到时间，9点后自动标记迟到）
+   - 签退（记录签退时间）
+   - 请假申请（选择日期范围、填写原因）
+   - 请假审批（管理员批准或驳回）
+   - 考勤记录查询（按日期筛选）
+
+5. 薪资管理
+   - 新增工资记录（选择员工、月份、基本工资、奖金、扣款）
+   - 编辑工资记录
+   - 一键发放工资
+   - 删除工资记录
+   - 按月份/状态筛选
+
+
+六、数据库操作
+----------------------------------------
+
+查看数据库内容（MySQL终端，中文会乱码）：
+> mysql -uroot hr_system
+
+常用SQL命令：
+> SHOW TABLES;                     查看所有表
+> SELECT * FROM employee;          查看员工
+> SELECT * FROM department;        查看部门
+> SELECT * FROM attendance LIMIT 10;   查看考勤
+> SELECT * FROM salary LIMIT 10;       查看薪资
+> SELECT * FROM leave_request;     查看请假
+> SELECT * FROM user;              查看用户
+> EXIT;                            退出
+
+查看数据库（中文正常显示）：
+> python -u -c "import pymysql,sys,io;sys.stdout=io.TextIOWrapper(sys.stdout.buffer,encoding='utf-8');c=pymysql.connect(host='localhost',user='root',database='hr_system',charset='utf8mb4');cur=c.cursor();cur.execute('你的SQL语句');[print(r) for r in cur.fetchall()];c.close()"
+
+导出数据库：
+> mysqldump -uroot hr_system > hr_system.sql
+
+导入数据库：
+> mysql -uroot hr_system < hr_system.sql
+
+
+七、项目结构
+----------------------------------------
+管理系统/
+├── backend/                    后端（Flask）
+│   ├── app.py                  应用入口
+│   ├── config.py               配置（数据库连接）
+│   ├── models.py               数据模型
+│   ├── extensions.py           扩展初始化
+│   ├── seed.py                 测试数据初始化
+│   ├── requirements.txt        Python依赖
+│   └── routes/                 API路由
+│       ├── auth.py             登录接口
+│       ├── employee.py         员工接口
+│       ├── department.py       部门接口
+│       ├── attendance.py       考勤接口
+│       ├── salary.py           薪资接口
+│       └── dashboard.py        看板接口
+│
+├── frontend/                   前端（Vue 3）
+│   ├── src/
+│   │   ├── main.js             入口文件
+│   │   ├── App.vue             根组件
+│   │   ├── router/index.js     路由配置
+│   │   ├── api/                API请求
+│   │   ├── utils/auth.js       登录工具
+│   │   └── views/              页面组件
+│   │       ├── Login.vue       登录页
+│   │       ├── Layout.vue      布局框架
+│   │       ├── Dashboard.vue   数据看板
+│   │       ├── employee/       员工管理
+│   │       ├── department/     部门管理
+│   │       ├── attendance/     考勤管理
+│   │       └── salary/         薪资管理
+│   ├── vite.config.js          Vite配置
+│   └── package.json
+│
+├── hr_system.sql               数据库备份文件
+└── 使用说明.txt                  本文件
+
+
+八、技术栈
+----------------------------------------
+前端：Vue 3 + Element Plus + Axios + ECharts
+后端：Flask + SQLAlchemy + Flask-JWT-Extended
+数据库：MySQL 8.0
